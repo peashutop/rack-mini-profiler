@@ -145,6 +145,10 @@ if SqlPatches.class_exists? "PG::Result"
       elapsed_time = ((Time.now - start).to_f * 1000).round(1)
       mapped = args[0]
       mapped = @prepare_map[mapped] || args[0] if @prepare_map
+
+      Rails.logger.info "result: #{result.inspect}"
+
+      # the following line sometimes crashes
       result.instance_variable_set("@miniprofiler_sql_id", ::Rack::MiniProfiler.record_sql(mapped, elapsed_time))
 
       result
